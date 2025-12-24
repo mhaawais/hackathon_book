@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "SlashCommand(/sp.specify)",
+      "Skill(sp.tasks)"
+    ]
+  }
+}

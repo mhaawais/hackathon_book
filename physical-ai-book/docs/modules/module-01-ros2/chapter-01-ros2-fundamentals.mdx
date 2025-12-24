@@ -1,0 +1,307 @@
+---
+id: chapter-01-ros2-fundamentals
+title: Chapter 1 - ROS 2 Fundamentals — Nodes, Topics, and Services
+sidebar_label: ROS 2 Nodes, Topics, Services
+slug: /modules/module-01-ros2/chapter-01-ros2-fundamentals
+---
+
+# Chapter 1: ROS 2 Fundamentals — Nodes, Topics, and Services
+
+## Introduction
+
+ROS 2 (Robot Operating System 2) serves as the communication backbone for modern robotics applications, particularly in the context of humanoid robotics. This chapter explores the fundamental architecture of ROS 2 and its role as the "robotic nervous system" that enables distributed computing across robot subsystems.
+
+## 1.1 Introduction to ROS 2 Architecture
+
+### Historical Context: From ROS 1 to ROS 2
+
+The Robot Operating System (ROS) began as a framework for academic and research robotics in 2007. While ROS 1 proved valuable for prototyping and development, it had limitations for production robotics, including:
+
+- **Single Master Architecture**: A central master node created a single point of failure
+- **Limited Multi-Robot Support**: Difficulty coordinating multiple robots in the same environment
+- **No Real-Time Support**: Challenging to meet deterministic timing requirements
+- **Lack of Security**: No built-in authentication or encryption mechanisms
+- **Middleware Limitations**: Tightly coupled to custom transport protocols
+
+ROS 2, introduced in 2015, addressed these limitations by adopting a modern, standards-based architecture that supports:
+
+- **Distributed Architecture**: No single point of failure
+- **Real-Time Support**: Deterministic communication for safety-critical systems
+- **Security**: Authentication, encryption, and access control
+- **Multi-Robot Systems**: Native support for multi-robot coordination
+- **Production-Ready**: Designed for industrial and commercial applications
+
+### Middleware Role in Robotics Systems
+
+ROS 2 functions as middleware that abstracts the complexity of robot communication, allowing developers to focus on application logic rather than low-level networking details. The middleware provides:
+
+- **Transport Abstraction**: Hides the details of network protocols, serialization, and message delivery
+- **Language Interoperability**: Enables communication between nodes written in different programming languages
+- **Platform Independence**: Works across different operating systems and hardware platforms
+- **Quality of Service (QoS)**: Provides configurable reliability and performance characteristics
+
+### DDS (Data Distribution Service) Foundation
+
+ROS 2's communication layer is built on Data Distribution Service (DDS), an industry-standard middleware specification for real-time, distributed systems. DDS provides:
+
+- **Publish-Subscribe Pattern**: Asynchronous communication between publishers and subscribers
+- **Data-Centric Architecture**: Focus on data rather than communication endpoints
+- **Discovery Protocol**: Automatic discovery of available publishers and subscribers
+- **Quality of Service Controls**: Configurable reliability, durability, and performance settings
+- **Real-Time Performance**: Deterministic behavior suitable for safety-critical applications
+
+DDS implementations used with ROS 2 include Fast DDS (Eclipse), Cyclone DDS (Adlink), and RTI Connext DDS.
+
+### Client Libraries
+
+ROS 2 provides client libraries (rcl) that implement the ROS 2 API for different programming languages:
+
+- **rclcpp**: C++ client library (based on rcl)
+- **rclpy**: Python client library (based on rcl)
+- **rclrs**: Rust client library
+- **rclc**: C client library for embedded systems
+- **rclnodejs**: Node.js client library
+- **rcljava**: Java client library
+
+## 1.2 Core Communication Concepts
+
+### Nodes: Independent Processes Performing Computation
+
+Nodes are the fundamental execution units in ROS 2. Each node is an independent process that performs specific computations and communicates with other nodes through messages.
+
+#### Node Lifecycle and Management
+
+Nodes in ROS 2 follow a well-defined lifecycle that enables sophisticated system management:
+
+- **Unconfigured State**: Node is created but not yet configured
+- **Inactive State**: Node is configured but not yet activated
+- **Active State**: Node is fully operational and executing
+- **Activating/Deactivating States**: Transitions between inactive and active
+- **Error Processing State**: Node encountered an error but can recover
+- **Finalized State**: Node is shutting down permanently
+
+This lifecycle enables:
+- Graceful system startup and shutdown
+- Dynamic reconfiguration during operation
+- Error recovery and fault tolerance
+- Resource management and optimization
+
+#### Node Naming and Namespace Conventions
+
+Nodes use a hierarchical naming system with namespaces for organization:
+
+- **Global Namespace**: Prefixed with `/` (e.g., `/camera_driver`)
+- **Relative Namespace**: Relative to current namespace (e.g., `camera_driver`)
+- **Private Namespace**: Prefixed with `~` (e.g., `~camera_id` for node-specific parameters)
+
+Namespaces enable:
+- Logical grouping of related nodes
+- Avoidance of naming conflicts in multi-robot systems
+- Configuration management for different robot instances
+
+#### Parameter Servers and Node Configuration
+
+ROS 2 provides a distributed parameter system where each node can maintain its own parameters:
+
+- **Node Parameters**: Each node can declare, get, and set its own parameters
+- **Parameter Services**: Nodes can query and modify parameters of other nodes
+- **Parameter Files**: Parameters can be loaded from YAML files
+- **Parameter Callbacks**: Nodes can react to parameter changes during execution
+
+### Topics: Asynchronous Publish-Subscribe Communication
+
+Topics enable asynchronous communication between nodes using a publish-subscribe pattern.
+
+#### Message Queues and Quality of Service (QoS) Settings
+
+QoS settings control how messages are delivered on topics:
+
+- **Reliability**: Reliable (all messages delivered) or Best Effort (some messages may be lost)
+- **Durability**: Volatile (only new messages) or Transient Local (historical messages available)
+- **History**: Keep All (unlimited queue) or Keep Last (fixed-size queue)
+- **Depth**: Size of the message queue when using Keep Last history
+
+```python
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
+
+# Example: Reliable communication with limited history
+qos_profile = QoSProfile(
+    depth=10,
+    reliability=ReliabilityPolicy.RELIABLE,
+    history=HistoryPolicy.KEEP_LAST
+)
+```
+
+#### Publisher-Subscriber Patterns
+
+The publish-subscribe pattern enables decoupled communication:
+
+- **Publishers** send messages to topics without knowing subscribers
+- **Subscribers** receive messages from topics without knowing publishers
+- **Automatic Discovery** connects publishers and subscribers at runtime
+- **Multiple Publishers/ Subscribers** can use the same topic
+
+#### Topic Monitoring and Introspection
+
+ROS 2 provides tools for monitoring and debugging topic communication:
+
+- `ros2 topic list`: Shows all active topics
+- `ros2 topic echo`: Displays messages on a topic
+- `ros2 topic info`: Shows publisher/subscriber information
+- `ros2 bag`: Records topic data for later analysis
+
+### Services: Synchronous Request-Response Communication
+
+Services enable synchronous communication with request-response patterns.
+
+#### Service Definitions and Interfaces
+
+Services are defined using Interface Definition Language (IDL) files:
+
+- **Request Message**: Parameters sent from client to server
+- **Response Message**: Results sent from server to client
+- **Service Interface**: Defines the request/response types
+- **Type Safety**: Compile-time checking of message formats
+
+#### Request-Reply Patterns
+
+Service communication follows a synchronous pattern:
+
+1. Client sends request to service server
+2. Server processes request and sends response
+3. Client receives response and continues execution
+4. Communication blocks until response is received
+
+#### When to Use Services vs Topics
+
+Use services for:
+- Operations that must complete before proceeding
+- Request-response interactions (e.g., robot calibration)
+- Operations with clear success/failure outcomes
+- Synchronous coordination between nodes
+
+Use topics for:
+- Continuous data streams (e.g., sensor data)
+- Asynchronous notifications
+- One-to-many communication
+- Real-time performance requirements
+
+### Actions: Goal-Oriented Communication with Feedback
+
+Actions provide a more sophisticated communication pattern for long-running operations.
+
+#### Action Goals, Results, and Feedback
+
+Actions support three types of communication:
+
+- **Goals**: Requests for long-running operations
+- **Feedback**: Periodic updates during operation
+- **Results**: Final outcomes when operation completes
+
+#### Long-Running Tasks and Cancellation
+
+Actions handle long-running operations with:
+
+- **Goal Tracking**: Monitor progress of operations
+- **Cancellation**: Allow clients to cancel running goals
+- **Preemption**: Replace pending goals with new ones
+- **Status Updates**: Provide operation status throughout execution
+
+#### State Machines and Action Clients
+
+Actions work well with state machine architectures:
+
+- **Sequential Execution**: Chain multiple actions together
+- **Parallel Execution**: Run multiple actions simultaneously
+- **Error Handling**: Define recovery strategies for action failures
+- **Coordination**: Synchronize multiple robot subsystems
+
+## 1.3 Communication Patterns in Humanoid Systems
+
+### Sensor Data Distribution Patterns
+
+Humanoid robots generate vast amounts of sensor data that must be distributed efficiently:
+
+- **High-Rate Sensors**: IMUs, encoders, and force/torque sensors require high-frequency updates
+- **Image Data**: Cameras generate large data volumes requiring compression and prioritization
+- **Multi-Sensor Fusion**: Data from multiple sensors must be synchronized and combined
+- **Bandwidth Management**: Prioritize critical data during communication constraints
+
+### Actuator Command Patterns
+
+Commanding humanoid robot actuators requires precise timing and coordination:
+
+- **Joint Trajectories**: Smooth, coordinated movement of multiple joints
+- **Force Control**: Precise force application for manipulation tasks
+- **Safety Monitoring**: Continuous checking of joint limits and safety constraints
+- **Real-Time Performance**: Deterministic response to ensure safety
+
+### Coordination Between Subsystems
+
+Humanoid robots require coordination across multiple subsystems:
+
+- **Perception-Action Loop**: Sensor data informs action selection and execution
+- **Planning-Execution**: High-level plans guide low-level execution
+- **Control Hierarchy**: Multiple control levels from high-level behavior to low-level motor control
+- **Multi-Robot Coordination**: Communication between multiple robots or human-robot teams
+
+### Real-Time Considerations and Determinism
+
+Humanoid robotics has strict timing requirements:
+
+- **Safety-Critical Operations**: Immediate response to safety events
+- **Dynamic Balance**: Continuous adjustment of balance control
+- **Interaction Safety**: Immediate stopping when humans are detected nearby
+- **Synchronization**: Coordination between multiple control loops
+
+## 1.4 Practical Examples
+
+### Simple Publisher-Subscriber Implementation
+
+Here's a basic example of publisher-subscriber communication in Python:
+
+```python
+# Publisher example
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+
+class MinimalPublisher(Node):
+    def __init__(self):
+        super().__init__('minimal_publisher')
+        self.publisher = self.create_publisher(String, 'topic', 10)
+        timer_period = 0.5  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.i = 0
+
+    def timer_callback(self):
+        msg = String()
+        msg.data = f'Hello World: {self.i}'
+        self.publisher.publish(msg)
+        self.get_logger().info(f'Publishing: "{msg.data}"')
+        self.i += 1
+
+# Subscriber example
+class MinimalSubscriber(Node):
+    def __init__(self):
+        super().__init__('minimal_subscriber')
+        self.subscription = self.create_subscription(
+            String,
+            'topic',
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
+
+    def listener_callback(self, msg):
+        self.get_logger().info(f'I heard: "{msg.data}"')
+```
+
+This example demonstrates the fundamental ROS 2 communication pattern where nodes publish messages to topics and other nodes subscribe to receive those messages.
+
+## Summary
+
+ROS 2 provides a robust middleware architecture for humanoid robotics, enabling distributed computing through its core concepts of nodes, topics, services, and actions. Understanding these fundamentals is crucial for connecting AI agents to robot controllers and building complex robotic systems.
+
+## Next Steps
+
+Now that you understand the fundamentals of ROS 2 architecture, proceed to [Chapter 2: Bridging AI Agents to Robots with rclpy](./chapter-02-rclpy-ai-bridge) to learn how Python-based AI agents interface with ROS 2.

@@ -1,0 +1,447 @@
+---
+id: chapter-03-urdf-humanoids
+title: Chapter 3 - Humanoid Representation with URDF
+sidebar_label: URDF for Humanoids
+slug: /modules/module-01-ros2/chapter-03-urdf-humanoids
+---
+
+# Chapter 3: Humanoid Representation with URDF
+
+## Introduction
+
+URDF (Unified Robot Description Format) is an XML-based format that describes robot models, including their physical and kinematic properties. For humanoid robots, URDF provides a standardized way to represent the complex structure of human-like robots, enabling AI agents to reason about robot form, capabilities, and interactions with the environment.
+
+## 3.1 URDF Fundamentals
+
+### XML-Based Robot Description Format
+
+URDF uses XML to describe robot models in a hierarchical structure. The root element is always a `<robot>` tag that contains all other elements:
+
+```xml
+<?xml version="1.0"?>
+<robot name="my_humanoid_robot">
+  <!-- Links and joints go here -->
+</robot>
+```
+
+The XML structure defines:
+- **Links**: Rigid bodies with physical properties
+- **Joints**: Constraints between links
+- **Materials**: Visual properties for rendering
+- **Transmissions**: Motor control specifications
+- **Gazebo plugins**: Simulation-specific configurations
+
+### Kinematic Chain Representation
+
+URDF represents robots as kinematic chains - a series of rigid bodies (links) connected by joints. Each chain starts from a base link and extends to end effectors:
+
+- **Base Link**: The root of the kinematic tree
+- **Parent-Child Relationships**: Each link has one parent and multiple children
+- **Tree Structure**: Forms a tree (not a graph) to avoid kinematic loops
+- **Transforms**: Each joint defines a transformation between parent and child links
+
+### Physical Properties and Inertial Parameters
+
+URDF includes physical properties that are essential for simulation and control:
+
+- **Mass**: Mass of each link in kilograms
+- **Inertia Tensor**: 3x3 matrix describing how mass is distributed
+- **Center of Mass**: Point where the link's mass is concentrated
+- **Collision Geometry**: Shapes for collision detection
+- **Visual Geometry**: Shapes for visualization
+
+```xml
+<link name="upper_arm">
+  <inertial>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <mass value="2.0"/>
+    <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.001"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="0.2" radius="0.05"/>
+    </geometry>
+    <material name="blue">
+      <color rgba="0 0 1 1"/>
+    </material>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="0.2" radius="0.05"/>
+    </geometry>
+  </collision>
+</link>
+```
+
+### Joint Types and Degrees of Freedom
+
+Joints define the allowed motion between links and specify degrees of freedom:
+
+- **Revolute Joints**: Single axis rotation with limits (like human joints)
+- **Continuous Joints**: Single axis rotation without limits
+- **Prismatic Joints**: Single axis translation with limits
+- **Fixed Joints**: No motion between links (welded together)
+- **Floating Joints**: Six degrees of freedom (rarely used)
+- **Planar Joints**: Motion on a plane (rarely used)
+
+## 3.2 Links, Joints, and Sensors
+
+### Links: Rigid Bodies with Physical Properties
+
+Links represent the rigid parts of a robot. Each link contains:
+
+#### Visual and Collision Geometry
+
+```xml
+<link name="head">
+  <visual>
+    <!-- How the link appears in visualizations -->
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <sphere radius="0.1"/>
+    </geometry>
+    <material name="white">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+  <collision>
+    <!-- Used for collision detection -->
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <sphere radius="0.1"/>
+    </geometry>
+  </collision>
+</link>
+```
+
+#### Mass, Center of Mass, and Inertia
+
+Physical properties are crucial for dynamics simulation and control:
+
+- **Mass**: Affects gravitational forces and acceleration
+- **Center of Mass**: Point where gravitational force acts
+- **Inertia**: Resistance to rotational acceleration around different axes
+
+#### Coordinate Frame Definitions
+
+Each link defines its own coordinate frame (origin) which serves as:
+- Reference for joint connections
+- Attachment point for sensors and actuators
+- Coordinate system for child links
+
+### Joints: Constraints Between Links
+
+Joints define how links can move relative to each other:
+
+#### Joint Types: Revolute, Prismatic, Continuous, Fixed
+
+**Revolute Joint** (hinge):
+```xml
+<joint name="elbow_joint" type="revolute">
+  <parent link="upper_arm"/>
+  <child link="forearm"/>
+  <origin xyz="0 0 0.2" rpy="0 0 0"/>
+  <axis xyz="0 1 0"/>
+  <limit lower="-2.0" upper="2.0" effort="100" velocity="1"/>
+</joint>
+```
+
+**Prismatic Joint** (slider):
+```xml
+<joint name="linear_joint" type="prismatic">
+  <parent link="base"/>
+  <child link="slider"/>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <axis xyz="0 0 1"/>
+  <limit lower="0" upper="0.5" effort="100" velocity="1"/>
+</joint>
+```
+
+**Fixed Joint** (weld):
+```xml
+<joint name="fixed_joint" type="fixed">
+  <parent link="base"/>
+  <child link="sensor_mount"/>
+  <origin xyz="0.1 0 0.1" rpy="0 0 0"/>
+</joint>
+```
+
+#### Joint Limits and Dynamics
+
+Joint limits specify the range of motion:
+- **Lower/Upper**: Position limits (for revolute and prismatic joints)
+- **Effort**: Maximum force/torque the joint can apply
+- **Velocity**: Maximum joint velocity
+
+Dynamics parameters:
+- **Damping**: Energy dissipation in the joint
+- **Friction**: Static friction in the joint
+
+#### Transmission Specifications
+
+Transmissions define how actuators connect to joints:
+
+```xml
+<transmission name="elbow_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="elbow_joint">
+    <hardwareInterface>PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="elbow_motor">
+    <hardwareInterface>PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+```
+
+### Sensors: Perception Capabilities
+
+URDF can describe sensors attached to robot links:
+
+#### Camera, IMU, Force/Torque Sensors
+
+**Camera Sensor**:
+```xml
+<gazebo reference="head">
+  <sensor name="camera" type="camera">
+    <camera>
+      <horizontal_fov>1.047</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>100</far>
+      </clip>
+    </camera>
+    <always_on>1</always_on>
+    <update_rate>30</update_rate>
+    <visualize>true</visualize>
+  </sensor>
+</gazebo>
+```
+
+**IMU Sensor**:
+```xml
+<gazebo reference="torso">
+  <sensor name="imu" type="imu">
+    <always_on>true</always_on>
+    <update_rate>100</update_rate>
+    <imu>
+      <angular_velocity>
+        <x>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>2e-4</stddev>
+          </noise>
+        </x>
+      </angular_velocity>
+    </imu>
+  </sensor>
+</gazebo>
+```
+
+#### Sensor Placement and Calibration
+
+Sensors are placed using transforms relative to their parent link:
+- **Position**: Where the sensor is located on the robot
+- **Orientation**: How the sensor is oriented
+- **Calibration**: Offset from ideal placement
+
+#### Integration with Robot State
+
+Sensors provide information to the robot state system:
+- **Robot State Publisher**: Publishes transforms for all links
+- **TF Tree**: Defines relationships between all coordinate frames
+- **Sensor Fusion**: Combines multiple sensor readings
+
+## 3.3 Kinematic Chains for Humanoid Robots
+
+### Humanoid Anatomy Modeling
+
+Humanoid robots are designed to mimic human body structure, requiring specific kinematic chains:
+
+- **Torso**: Trunk of the robot with head attachment
+- **Arms**: Shoulder, elbow, and wrist joints for manipulation
+- **Legs**: Hip, knee, and ankle joints for locomotion
+- **Neck**: Head orientation for perception
+
+### Leg, Arm, and Torso Kinematic Chains
+
+**Leg Chain** (from hip to foot):
+```
+torso -> hip_joint -> thigh -> knee_joint -> shank -> ankle_joint -> foot
+```
+
+**Arm Chain** (from shoulder to hand):
+```
+torso -> shoulder_joint -> upper_arm -> elbow_joint -> forearm -> wrist_joint -> hand
+```
+
+**Spine Chain** (torso segmentation):
+```
+base -> spine_joint1 -> spine1 -> spine_joint2 -> spine2 -> ...
+```
+
+### Redundancy and Inverse Kinematics
+
+Humanoid robots often have redundant degrees of freedom:
+- **Multiple Solutions**: Same end-effector position can be achieved in multiple ways
+- **Task Prioritization**: Handle multiple simultaneous tasks (e.g., reach + balance)
+- **Obstacle Avoidance**: Navigate around obstacles while achieving goals
+
+Inverse kinematics (IK) solvers:
+- **Analytical IK**: Closed-form solutions for simple chains
+- **Numerical IK**: Iterative methods for complex chains
+- **Optimization-based IK**: Multi-objective optimization
+
+### Center of Mass Considerations
+
+For humanoid robots, center of mass management is critical:
+- **Balance Control**: Keep CoM within support polygon
+- **Dynamic Walking**: Shift CoM to achieve locomotion
+- **Stability**: Minimize CoM acceleration during movements
+
+## 3.4 URDF for Simulation and Control
+
+### Robot State Publisher Integration
+
+The robot state publisher is essential for URDF-based systems:
+
+```xml
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+  <param name="publish_frequency" value="50.0"/>
+  <param name="use_tf_static" value="false"/>
+  <param name="ignore_timestamp" value="false"/>
+</node>
+```
+
+The robot state publisher:
+- Subscribes to joint state messages
+- Computes forward kinematics
+- Publishes TF transforms for all links
+- Enables visualization and perception systems
+
+### Forward Kinematics Computation
+
+Forward kinematics computes link positions from joint angles:
+- **Geometric Transformations**: Chain of rotation and translation matrices
+- **DH Parameters**: Denavit-Hartenberg convention for link descriptions
+- **Spatial Algebra**: Modern approach using screw theory
+
+### Collision Detection Setup
+
+URDF collision geometry enables:
+- **Self-Collision Detection**: Prevent robot from colliding with itself
+- **Environment Collision**: Detect collisions with world objects
+- **Safety Systems**: Stop robot when collisions are imminent
+
+### Visualization in RViz and Gazebo
+
+URDF files work with visualization tools:
+
+**RViz**:
+- Displays robot model with real joint positions
+- Shows sensor data overlaid on robot
+- Visualizes planning and control information
+
+**Gazebo**:
+- Provides physics simulation
+- Simulates sensor data generation
+- Tests control algorithms in virtual environment
+
+## 3.5 Best Practices and Extensions
+
+### Xacro Macro Language for Complex URDFs
+
+Xacro (XML Macros) extends URDF with programming capabilities:
+
+```xml
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="humanoid_with_xacro">
+
+  <!-- Define a macro for a simple arm -->
+  <xacro:macro name="simple_arm" params="prefix parent_link">
+    <link name="${prefix}_upper_arm">
+      <visual>
+        <geometry>
+          <cylinder length="0.3" radius="0.05"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="0.3" radius="0.05"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="1.0"/>
+        <inertia ixx="0.01" iyy="0.01" izz="0.001" ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+    </link>
+
+    <joint name="${prefix}_shoulder_joint" type="revolute">
+      <parent link="${parent_link}"/>
+      <child link="${prefix}_upper_arm"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="-1.57" upper="1.57" effort="100" velocity="1"/>
+      <origin xyz="0 0.1 0" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Use the macro to create left and right arms -->
+  <xacro:simple_arm prefix="left" parent_link="torso"/>
+  <xacro:simple_arm prefix="right" parent_link="torso"/>
+
+</robot>
+```
+
+Xacro features:
+- **Macros**: Reusable components
+- **Properties**: Parameter definitions
+- **Mathematical Expressions**: Calculations in URDF
+- **Conditionals**: Include/exclude based on conditions
+
+### Modular Design and Reusability
+
+Best practices for URDF design:
+- **Component-Based**: Build robots from reusable components
+- **Parameterized**: Use properties for easy customization
+- **Hierarchical**: Organize files logically
+- **Version Control**: Track changes to robot models
+
+### Validation and Debugging Techniques
+
+URDF validation methods:
+- **XML Validation**: Check syntax and structure
+- **Kinematic Validation**: Verify joint limits and ranges
+- **Collision Checking**: Ensure no overlapping geometries
+- **Forward Kinematics**: Verify transforms are correct
+
+### Integration with MoveIt and Other Tools
+
+URDF integrates with planning and control tools:
+
+**MoveIt**:
+- Motion planning for manipulation and navigation
+- Collision-aware trajectory generation
+- Inverse kinematics solvers
+- Safety-aware execution
+
+**Other Tools**:
+- **URDF Viewer**: Visualize robot models
+- **Forward/Inverse Kinematics**: Compute kinematic solutions
+- **Dynamics Simulation**: Physics-based simulation
+
+## Summary
+
+URDF provides a standardized way to represent humanoid robots, enabling AI agents to understand robot structure and capabilities. By defining links, joints, and sensors in URDF, AI systems can reason about robot kinematics, plan movements, and interact with the physical robot. The combination of URDF with tools like MoveIt enables sophisticated AI-robot integration for complex humanoid applications.
+
+The concepts covered in this module - ROS 2 fundamentals, AI agent integration with rclpy, and humanoid representation with URDF - provide the foundation for connecting AI agents to humanoid robots. These concepts prepare you for simulation environments and advanced control systems that will be covered in future modules.
+
+## Next Steps
+
+You've completed Module 1: The Robotic Nervous System (ROS 2). To review the fundamentals, you can return to the [Module Introduction](./intro). For the complete learning path, continue with upcoming modules that will cover simulation, control systems, and advanced AI integration patterns.

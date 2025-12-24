@@ -1,0 +1,33 @@
+.sidebarCategoryHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sidebarCategoryIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ifm-color-primary);
+}
+
+.sidebarCategoryLabel {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.sidebarItemLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.sidebarItemBullet {
+  color: var(--ifm-color-primary);
+  font-size: 1.2rem;
+}
+
+.sidebarItemText {
+  flex: 1;
+}

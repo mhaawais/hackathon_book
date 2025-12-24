@@ -1,0 +1,199 @@
+---
+id: chapter-02-llm-planning
+title: Chapter 2 - Cognitive Planning — LLM Task-to-ROS Action Sequencing
+sidebar_label: Cognitive Planning
+slug: /modules/module-04-vla/chapter-02-llm-planning
+---
+
+# Chapter 2: Cognitive Planning — LLM Task-to-ROS Action Sequencing
+
+## Introduction
+
+Cognitive planning represents the brain of autonomous humanoid robots, enabling them to understand complex high-level commands and decompose them into executable sequences of actions. This chapter explores how large language models (LLMs) can serve as cognitive planners, bridging the gap between natural language commands and low-level robot control systems. Building upon the voice-to-action pipeline from Chapter 1 and the AI integration concepts from Module 3, this chapter demonstrates how LLMs enable sophisticated reasoning and task planning.
+
+## 2.1 LLM-Based Task Sequencing
+
+### Planning with Large Language Models
+
+Large language models bring unprecedented capabilities to robotic planning by enabling:
+
+- **Natural language task decomposition**: Breaking down high-level commands into sequences of executable actions
+- **Contextual reasoning**: Understanding environmental constraints and robot capabilities
+- **Common-sense knowledge**: Applying general world knowledge to specific tasks
+- **Adaptive planning**: Modifying plans based on new information or changing conditions
+
+LLMs excel at understanding the relationships between actions and their prerequisites, making them well-suited for generating robot action sequences that account for dependencies and constraints.
+
+### Action Sequence Generation
+
+The process of generating action sequences from high-level commands involves:
+
+1. **Command interpretation**: Understanding the user's intent and required outcome
+2. **World modeling**: Creating an internal representation of the current state
+3. **Plan generation**: Creating a sequence of actions to achieve the goal
+4. **Constraint checking**: Ensuring the plan respects safety and capability limits
+5. **Plan refinement**: Optimizing the sequence for efficiency and robustness
+
+For example, the command "Clean the kitchen and then charge yourself" might generate a sequence:
+1. Navigate to kitchen
+2. Identify dirty objects
+3. Pick up dirty objects
+4. Dispose of objects appropriately
+5. Navigate to charging station
+6. Execute charging procedure
+
+### Integration with ROS2 Action Architecture
+
+LLM-generated plans must be compatible with ROS2's action, service, and topic architecture:
+
+- **Long-running tasks** use ROS2 actions (navigation, manipulation)
+- **Immediate responses** use ROS2 services (object identification, status queries)
+- **Continuous monitoring** uses ROS2 topics (sensor data, status updates)
+- **Configuration** uses ROS2 parameters (behavior parameters, safety limits)
+
+The LLM planner acts as a high-level coordinator, orchestrating these different ROS2 communication patterns to achieve complex goals.
+
+## 2.2 Reasoning and Planning with LLMs
+
+### Cognitive Architectures for Robot Reasoning
+
+Effective LLM integration requires careful consideration of cognitive architecture:
+
+- **Memory systems**: How the LLM maintains state and remembers past interactions
+- **Tool integration**: Connecting LLM reasoning to ROS2 capabilities
+- **Feedback loops**: Incorporating execution results back into planning
+- **Error recovery**: Handling failed actions and plan adjustments
+
+### World Modeling for LLM Planning
+
+LLMs require structured information about the environment to plan effectively:
+
+- **Spatial relationships**: Object locations, navigable areas, obstacles
+- **Object properties**: Affordances, states, categories
+- **Temporal aspects**: Task dependencies, deadlines, scheduling
+- **Agent capabilities**: What the robot can and cannot do
+
+This information must be presented to the LLM in a format it can understand, often requiring structured prompts that include current state information.
+
+### Long-Term Memory Integration
+
+For complex tasks, LLMs benefit from access to:
+
+- **Episodic memory**: Records of past interactions and outcomes
+- **Semantic memory**: General knowledge about objects, actions, and procedures
+- **Procedural memory**: Standard operating procedures and best practices
+- **Contextual memory**: Information about the current task and environment
+
+These memory systems enable the LLM to learn from experience and apply knowledge from similar situations.
+
+## 2.3 Generating Action Plans from High-Level Commands
+
+### Multi-Step Task Decomposition
+
+Complex commands require sophisticated decomposition:
+
+- **Hierarchical planning**: Breaking tasks into subtasks and sub-subtasks
+- **Dependency analysis**: Understanding which actions must precede others
+- **Resource allocation**: Managing robot time, energy, and capabilities
+- **Contingency planning**: Preparing for potential failures or obstacles
+
+For example, "Set the table for dinner" decomposes into:
+- Identify table location
+- Count number of settings needed
+- Identify required items (plates, utensils, glasses)
+- Navigate to storage locations
+- Retrieve items systematically
+- Place items appropriately on table
+
+### Plan Refinement and Optimization
+
+Generated plans often require refinement:
+
+- **Efficiency optimization**: Minimizing travel distance or execution time
+- **Safety validation**: Ensuring all actions are safe to execute
+- **Capability checking**: Verifying the robot can perform all planned actions
+- **Constraint satisfaction**: Ensuring plans meet all operational constraints
+
+### Handling Partial Information
+
+Real-world scenarios often involve incomplete information:
+
+- **Uncertain object locations**: Planning for exploration when needed
+- **Ambiguous commands**: Seeking clarification when necessary
+- **Changing conditions**: Adapting plans as the environment changes
+- **Limited sensing**: Planning around sensor limitations
+
+LLMs can reason about uncertainty and plan accordingly, often better than traditional symbolic planners.
+
+## 2.4 Integration with Previous Modules
+
+### Connecting to ROS2 Concepts (Module 1)
+
+The LLM planning system builds upon ROS2 foundations:
+
+- **Action servers** provide the building blocks for LLM-generated sequences
+- **Parameter servers** configure planning behavior and constraints
+- **Topics** provide real-time state information to inform planning
+- **Services** enable immediate queries during plan execution
+
+### Linking to AI Brain Concepts (Module 3)
+
+LLM planning integrates with the AI systems from Module 3:
+
+- **Perception systems** provide the environmental information needed for planning
+- **Navigation systems** execute the movement components of plans
+- **Control systems** handle the low-level execution of actions
+- **Training methodologies** inform how the system learns from experience
+
+### Simulation-to-Reality Planning (Module 2)
+
+Planning systems benefit from simulation environments:
+
+- **Plan validation** in safe virtual environments before real execution
+- **Training data generation** for improving LLM planning capabilities
+- **Transfer learning** from simulated to real-world scenarios
+- **Risk assessment** through simulated execution of complex plans
+
+## 2.5 Practical Implementation Example
+
+### LLM-ROS2 Integration Architecture
+
+A typical LLM planning system includes:
+
+1. **State perception module**: Collects current state information
+2. **LLM planner**: Generates action sequences from commands
+3. **Plan executor**: Coordinates ROS2 action execution
+4. **Feedback processor**: Incorporates execution results
+5. **Memory manager**: Maintains relevant context
+
+### Example Planning Scenario
+
+Consider the command "Find John's keys and bring them to him":
+1. The LLM planner receives the command and current state
+2. It decomposes the task: locate John, identify keys, navigate to keys, grasp keys, navigate to John, deliver keys
+3. It queries ROS2 services to locate John in the environment
+4. It plans a navigation sequence to key locations based on common hiding spots
+5. It executes perception actions to identify the keys
+6. It sequences manipulation and navigation actions to deliver the keys
+7. Throughout execution, it monitors for changes and adapts the plan as needed
+
+### Safety and Validation
+
+LLM-generated plans require careful validation:
+
+- **Safety checks**: Ensuring no planned actions violate safety constraints
+- **Capability validation**: Verifying the robot can execute each action
+- **Goal verification**: Confirming the plan will achieve the intended outcome
+- **Fallback planning**: Preparing alternative actions for common failure modes
+
+## Summary
+
+LLM-based cognitive planning enables humanoid robots to understand and execute complex high-level commands by decomposing them into sequences of ROS2-compatible actions. This approach leverages the reasoning capabilities of large language models while maintaining compatibility with established robotic frameworks. The next chapter will demonstrate how these planning capabilities integrate into a complete autonomous system.
+
+## Connection to Previous Modules
+
+This chapter extends the AI integration concepts from Module 3 by showing how LLMs can serve as cognitive planners. It builds upon the ROS2 communication patterns from Module 1 to implement the action sequences generated by the LLM. The simulation concepts from Module 2 provide safe environments for validating and training these planning systems.
+
+## Next Steps
+
+Now that you understand cognitive planning with LLMs, proceed to [Chapter 3: Capstone — End-to-End Autonomous Humanoid Pipeline](./chapter-03-capstone-autonomous-humanoid) to see how all components integrate into a complete autonomous system.

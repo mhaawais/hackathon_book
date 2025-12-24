@@ -1,0 +1,153 @@
+---
+id: chapter-01-voice-to-action
+title: Chapter 1 - Voice to Action — Speech-to-Text and Intent Grounding
+sidebar_label: Voice to Action
+slug: /modules/module-04-vla/chapter-01-voice-to-action
+---
+
+# Chapter 1: Voice to Action — Speech-to-Text and Intent Grounding
+
+## Introduction
+
+The Voice to Action pipeline represents a critical component of autonomous humanoid robots, enabling them to understand natural language commands and translate them into executable actions. This chapter explores the complete pipeline from speech input to robot action execution, building upon the ROS2 communication patterns learned in Module 1 and the perception systems from Module 3.
+
+## 1.1 Speech Recognition Technologies for Robotics
+
+### Real-Time Speech Processing
+
+Speech recognition in robotics presents unique challenges compared to traditional voice assistants. Humanoid robots must operate in dynamic environments with background noise, multiple speakers, and varying acoustic conditions. The speech recognition system must:
+
+- Process audio in real-time with minimal latency
+- Filter out environmental noise and robot self-noise
+- Handle overlapping speech and interruptions
+- Maintain accuracy in changing acoustic environments
+
+### Acoustic and Language Models
+
+Modern robotics speech recognition typically employs deep neural networks for both acoustic modeling (converting audio signals to phonemes) and language modeling (converting phonemes to text). The acoustic model must be trained on diverse audio conditions, while the language model should understand the specific command vocabulary relevant to robotic tasks.
+
+For humanoid robots, it's essential to incorporate context awareness into the recognition process. This means the system should understand that "move forward" in a navigation context likely means "move forward 1 meter" rather than an unbounded movement.
+
+### Robotics-Specific Considerations
+
+Robot speech recognition systems must account for:
+
+- **Self-noise filtering**: The robot's own motors and fans create background noise that must be filtered out
+- **Multi-modal integration**: Speech commands often need to be combined with visual information for accurate interpretation
+- **Attention mechanisms**: The robot should be able to determine when it's being addressed versus when humans are speaking to each other
+- **Robustness**: Commands must be understood even in noisy environments
+
+## 1.2 Natural Language Understanding for Robots
+
+### Semantic Parsing
+
+Natural Language Understanding (NLU) in robotics goes beyond simple keyword matching to extract semantic meaning from commands. The system must identify:
+
+- **Intents**: What the user wants the robot to do (navigate, manipulate, respond, etc.)
+- **Entities**: Specific objects, locations, or parameters mentioned in the command
+- **Context**: Environmental or situational factors that influence interpretation
+- **Constraints**: Safety or operational limitations that affect execution
+
+For example, the command "Bring me the red cup from the kitchen" contains:
+- Intent: Manipulation (grasp and deliver)
+- Entities: "red cup" (object), "kitchen" (location)
+- Context: The robot is in a different location than the requested object
+- Constraints: The robot must navigate to the kitchen, identify the correct cup, grasp it, and return
+
+### Context-Aware Command Interpretation
+
+Robotic systems must interpret commands within the context of their current state, environment, and capabilities. This includes:
+
+- **Spatial context**: Understanding "the table" might refer to the nearest table to the robot
+- **Temporal context**: Commands like "do that again" refer to the previous action
+- **Capability context**: The robot should understand what it can and cannot do
+- **Safety context**: Commands that would violate safety constraints should be rejected or clarified
+
+### Intent Grounding
+
+Intent grounding connects natural language to executable robot actions. This involves:
+
+- Mapping high-level commands to specific ROS2 actions, services, or topics
+- Determining appropriate parameters for actions based on command entities
+- Handling ambiguous commands by requesting clarification
+- Maintaining a consistent command vocabulary across different robot capabilities
+
+## 1.3 Voice Command to Action Mapping
+
+### Command Taxonomy
+
+Robotic commands can be categorized into several types:
+
+- **Navigation commands**: Move to locations, follow, patrol
+- **Manipulation commands**: Grasp, place, open, close
+- **Interaction commands**: Greet, respond, wait
+- **Information commands**: Report status, identify objects, answer questions
+- **System commands**: Start, stop, pause, resume
+
+Each command type maps to specific ROS2 interfaces and requires different perception and action capabilities.
+
+### Action Selection Based on Context
+
+The robot must select appropriate actions based on multiple contextual factors:
+
+- **Current state**: A robot that is already moving shouldn't start another navigation task without pausing
+- **Environmental state**: Objects must be visible and accessible before manipulation commands
+- **User context**: Commands may have different interpretations based on who issued them
+- **Safety state**: Actions must respect safety constraints and operational boundaries
+
+### Error Handling for Misunderstood Commands
+
+Robust voice-to-action systems must handle various types of errors:
+
+- **Recognition errors**: When speech isn't understood
+- **Interpretation errors**: When the command is recognized but not understood
+- **Execution errors**: When the robot understands the command but cannot execute it
+- **Ambiguity errors**: When the command is ambiguous and requires clarification
+
+The system should respond appropriately to each error type, potentially requesting clarification, offering alternatives, or explaining limitations.
+
+## 1.4 Practical Implementation Example
+
+### Speech-to-Action Pipeline Architecture
+
+The complete Voice to Action pipeline typically consists of:
+
+1. **Audio Input**: Microphones capture speech in real-time
+2. **Preprocessing**: Noise reduction and audio enhancement
+3. **Speech Recognition**: Conversion of audio to text
+4. **Natural Language Understanding**: Extraction of intent and entities
+5. **Action Mapping**: Translation of intent to ROS2 actions
+6. **Execution**: Sending commands to robot controllers
+7. **Feedback**: Confirmation or error reporting to the user
+
+### Integration with ROS2
+
+The voice-to-action system integrates with ROS2 through:
+
+- **Action servers** for long-running tasks like navigation
+- **Services** for immediate responses like object identification
+- **Topics** for status updates and feedback
+- **Parameters** for configuration of recognition thresholds and vocabularies
+
+### Example Command Flow
+
+Consider the command "Go to the living room and wait there":
+1. Audio is captured and processed by the speech recognition node
+2. Text "Go to the living room and wait there" is sent to the NLU node
+3. NLU identifies intent (navigate and wait) and entity (living room)
+4. The action mapper converts this to a navigation action with the living room as the goal
+5. The navigation system executes the path planning and movement
+6. Once at the goal, a waiting behavior is activated
+7. The system provides audio feedback confirming completion
+
+## Summary
+
+The Voice to Action pipeline enables humanoid robots to understand and respond to natural language commands. Success requires integration of real-time speech processing, natural language understanding, and appropriate action mapping, all while considering the robot's context and capabilities. This foundation enables the more sophisticated cognitive planning covered in the next chapter.
+
+## Connection to Previous Modules
+
+This chapter builds upon the ROS2 communication patterns learned in Module 1, using actions, services, and topics to coordinate the voice processing pipeline. The perception capabilities from Module 3 are essential for context-aware command interpretation, particularly for grounding spatial references and identifying objects mentioned in commands.
+
+## Next Steps
+
+Now that you understand the Voice to Action pipeline, proceed to [Chapter 2: Cognitive Planning with LLMs](./chapter-02-llm-planning) to learn how large language models enable higher-level reasoning and task planning for humanoid robots.

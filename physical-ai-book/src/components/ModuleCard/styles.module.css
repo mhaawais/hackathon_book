@@ -1,0 +1,147 @@
+.moduleCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--ifm-color-gray-200);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ifm-card-background-color);
+  position: relative;
+}
+
+[data-theme='dark'] .moduleCard {
+  border: 1px solid var(--ifm-color-gray-700);
+}
+
+.moduleCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border-color: transparent;
+}
+
+[data-theme='dark'] .moduleCard:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}
+
+/* Add a subtle background effect */
+.moduleCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.02));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.moduleCard:hover::before {
+  opacity: 1;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+}
+
+.moduleNumber {
+  color: white;
+  width: 3rem;
+  height: 3rem;
+  min-width: 3rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cardIcon {
+  color: var(--ifm-color-gray-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: var(--ifm-color-gray-100);
+}
+
+[data-theme='dark'] .cardIcon {
+  background: var(--ifm-color-gray-800);
+  color: var(--ifm-color-gray-400);
+}
+
+.cardContent {
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--ifm-heading-color);
+  line-height: 1.4;
+}
+
+.cardDescription {
+  color: var(--ifm-color-gray-600);
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+[data-theme='dark'] .cardDescription {
+  color: var(--ifm-color-gray-300);
+}
+
+.cardFooter {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  margin-top: auto;
+}
+
+.learnMore {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.moduleCard:hover .learnMore {
+  text-decoration: none;
+  position: relative;
+}
+
+.moduleCard:hover .learnMore::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--ifm-color-primary);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.moduleCard:hover .learnMore::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
