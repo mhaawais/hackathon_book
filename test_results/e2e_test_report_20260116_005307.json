@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-01-16T00:52:58.471878",
+  "feature": "Agent + Retrieval API",
+  "tests_run": [
+    {
+      "test_id": "T001",
+      "test_name": "Normal retrieval mode",
+      "status": "FAILED",
+      "duration_ms": 2537.917137145996,
+      "mode_used": "retrieval",
+      "sources_count": 0,
+      "response_preview": "I encountered an error processing your request: Error code: 402 - {'error': {'message': 'Insufficien...",
+      "retrieval_time_ms": 1011.6994380950928,
+      "total_time_ms": 1524.6694087982178
+    },
+    {
+      "test_id": "T002",
+      "test_name": "Selected-text-only mode",
+      "status": "PASSED",
+      "duration_ms": 208.93526077270508,
+      "mode_used": "selected-text-only",
+      "sources_count": 0,
+      "response_preview": "I encountered an error processing your request: Error code: 402 - {'error': {'message': 'Insufficien...",
+      "retrieval_time_ms": 0.0,
+      "total_time_ms": 188.98439407348633
+    },
+    {
+      "test_id": "T003",
+      "test_name": "Service availability check",
+      "status": "PASSED",
+      "duration_ms": 204.21981811523438,
+      "retrieval_tool_available": true
+    }
+  ],
+  "summary": {
+    "total_tests": 3,
+    "passed": 2,
+    "failed": 1,
+    "success_rate": 66.66666666666666
+  }
+}

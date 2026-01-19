@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-01-14T04:58:36.977981",
+  "feature": "OpenAI Agents SDK Implementation",
+  "test_results": {
+    "retrieval_mode": {
+      "test_id": "T001",
+      "test_name": "Retrieval Mode",
+      "status": "PASSED",
+      "duration_ms": 769.4289684295654,
+      "mode_used": "retrieval",
+      "sources_count": 0,
+      "has_answer": true,
+      "error_present": false,
+      "response_preview": "I encountered an error processing your request: The api_key client option must be set either by pass...",
+      "retrieval_time_ms": 356.1990261077881,
+      "total_time_ms": 412.81771659851074
+    },
+    "selected_text_only_mode": {
+      "test_id": "T002",
+      "test_name": "Selected-text-only Mode",
+      "status": "PASSED",
+      "duration_ms": 3.627300262451172,
+      "mode_used": "selected-text-only",
+      "sources_count": 0,
+      "has_answer": true,
+      "error_present": false,
+      "response_preview": "I encountered an error processing your request: The api_key client option must be set either by pass...",
+      "retrieval_time_ms": 0.0,
+      "total_time_ms": 3.468751907348633
+    }
+  },
+  "summary": {
+    "total_tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "success_rate": 100.0
+  }
+}

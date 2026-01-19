@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-01-16T05:25:39.808381",
+  "feature": "OpenAI Agents SDK Implementation",
+  "test_results": {
+    "retrieval_mode": {
+      "test_id": "T001",
+      "test_name": "Retrieval Mode",
+      "status": "PASSED",
+      "duration_ms": 4385.9357833862305,
+      "mode_used": "retrieval",
+      "sources_count": 3,
+      "has_answer": true,
+      "has_docs_sources": true,
+      "error_present": false,
+      "response_preview": "This system is designed to assist users by providing information based on a comprehensive documentat...",
+      "retrieval_time_ms": 459.3062400817871,
+      "total_time_ms": 4384.092092514038
+    },
+    "selected_text_only_mode": {
+      "test_id": "T002",
+      "test_name": "Selected-text-only Mode",
+      "status": "PASSED",
+      "duration_ms": 2507.509469985962,
+      "mode_used": "selected-text-only",
+      "sources_count": 0,
+      "has_answer": true,
+      "error_present": false,
+      "response_preview": "The text says that testing is an important part of software development and helps ensure quality and...",
+      "retrieval_time_ms": 0.0,
+      "total_time_ms": 2505.8510303497314
+    }
+  },
+  "summary": {
+    "total_tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "success_rate": 100.0
+  }
+}

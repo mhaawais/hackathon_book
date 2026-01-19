@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-01-17T00:43:13.599346",
+  "feature": "Agent + Retrieval API",
+  "tests_run": [
+    {
+      "test_id": "T001",
+      "test_name": "Normal retrieval mode",
+      "status": "FAILED",
+      "duration_ms": 4000.9565353393555,
+      "mode_used": "retrieval",
+      "sources_count": 0,
+      "response_preview": "I encountered an error processing your request: Gemini API error: 404 models/gemini-1.5-flash is not...",
+      "retrieval_time_ms": 600.5616188049316,
+      "total_time_ms": 3995.3134059906006
+    },
+    {
+      "test_id": "T002",
+      "test_name": "Selected-text-only mode",
+      "status": "PASSED",
+      "duration_ms": 163.26594352722168,
+      "mode_used": "selected-text-only",
+      "sources_count": 0,
+      "response_preview": "I encountered an error processing your request: Gemini API error: 404 models/gemini-1.5-flash is not...",
+      "retrieval_time_ms": 0.0,
+      "total_time_ms": 152.1279811859131
+    },
+    {
+      "test_id": "T003",
+      "test_name": "Service availability check",
+      "status": "PASSED",
+      "duration_ms": 199.62430000305176,
+      "retrieval_tool_available": true
+    }
+  ],
+  "summary": {
+    "total_tests": 3,
+    "passed": 2,
+    "failed": 1,
+    "success_rate": 66.66666666666666
+  }
+}

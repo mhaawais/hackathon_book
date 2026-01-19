@@ -68,6 +68,11 @@ const config: Config = {
     ],
   ],
 
+  // Custom fields for API configuration
+  customFields: {
+    chatApiBaseUrl: process.env.CHAT_API_BASE_URL || 'http://127.0.0.1:8001',
+  },
+
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',

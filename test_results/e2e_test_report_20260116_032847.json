@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-01-16T03:28:38.635967",
+  "feature": "Agent + Retrieval API",
+  "tests_run": [
+    {
+      "test_id": "T001",
+      "test_name": "Normal retrieval mode",
+      "status": "FAILED",
+      "duration_ms": 1831.925630569458,
+      "mode_used": "retrieval",
+      "sources_count": 0,
+      "response_preview": "I encountered an error processing your request: Error code: 404 - {'error': {'message': 'No endpoint...",
+      "retrieval_time_ms": 922.0607280731201,
+      "total_time_ms": 1830.061435699463
+    },
+    {
+      "test_id": "T002",
+      "test_name": "Selected-text-only mode",
+      "status": "PASSED",
+      "duration_ms": 803.4279346466064,
+      "mode_used": "selected-text-only",
+      "sources_count": 0,
+      "response_preview": "I encountered an error processing your request: Error code: 404 - {'error': {'message': 'No endpoint...",
+      "retrieval_time_ms": 0.0,
+      "total_time_ms": 793.7896251678467
+    },
+    {
+      "test_id": "T003",
+      "test_name": "Service availability check",
+      "status": "PASSED",
+      "duration_ms": 213.93513679504395,
+      "retrieval_tool_available": true
+    }
+  ],
+  "summary": {
+    "total_tests": 3,
+    "passed": 2,
+    "failed": 1,
+    "success_rate": 66.66666666666666
+  }
+}

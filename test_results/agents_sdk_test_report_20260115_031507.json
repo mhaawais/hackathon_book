@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-01-15T03:15:06.012787",
+  "feature": "OpenAI Agents SDK Implementation",
+  "test_results": {
+    "retrieval_mode": {
+      "test_id": "T001",
+      "test_name": "Retrieval Mode",
+      "status": "FAILED",
+      "duration_ms": 1249.3629455566406,
+      "mode_used": "retrieval",
+      "sources_count": 0,
+      "has_answer": true,
+      "has_docs_sources": false,
+      "error_present": false,
+      "response_preview": "I encountered an error processing your request: Unknown prefix: google",
+      "retrieval_time_ms": 1247.319221496582,
+      "total_time_ms": 1.689910888671875
+    },
+    "selected_text_only_mode": {
+      "test_id": "T002",
+      "test_name": "Selected-text-only Mode",
+      "status": "PASSED",
+      "duration_ms": 5.269527435302734,
+      "mode_used": "selected-text-only",
+      "sources_count": 0,
+      "has_answer": true,
+      "error_present": false,
+      "response_preview": "I encountered an error processing your request: Unknown prefix: google",
+      "retrieval_time_ms": 0.0,
+      "total_time_ms": 4.882335662841797
+    }
+  },
+  "summary": {
+    "total_tests": 2,
+    "passed": 1,
+    "failed": 1,
+    "success_rate": 50.0
+  }
+}

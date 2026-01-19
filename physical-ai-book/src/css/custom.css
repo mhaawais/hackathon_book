@@ -719,9 +719,398 @@ select:focus,
   background-color: var(--ifm-color-gray-800);
 }
 
+/* Pulse animation for health indicator and other elements */
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+/* Make sure floating chat is visible on all pages */
+html body {
+  position: relative;
+}
+
 /* Enhanced responsive layout for main content */
 .main-wrapper {
   padding: 0 1rem;
+}
+
+/* Enhanced responsive layout for all content */
+.container {
+  padding: 0 1rem;
+  max-width: 100% !important;
+  margin: 0 auto;
+}
+
+/* Main content wrapper with responsive fixes */
+.main-wrapper {
+  padding: 0 1rem;
+  margin: 0;
+}
+
+/* Ensure content doesn't get cut off on smaller screens */
+.docusaurus-wrapper {
+  overflow-x: hidden;
+}
+
+/* Responsive adjustments for all components */
+@media (max-width: 1200px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .main-wrapper {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 996px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .main-wrapper {
+    padding: 0 1.25rem;
+  }
+
+  /* Fix sidebar text cut-off */
+  .menu__list,
+  .menu__link {
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  /* Ensure text doesn't overflow */
+  .hero__title,
+  .hero__subtitle,
+  h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .main-wrapper {
+    padding: 0 1rem;
+  }
+
+  /* Prevent text cut-off on smaller screens */
+  .hero,
+  .hero__title,
+  .hero__subtitle,
+  .markdown,
+  .theme-doc-markdown,
+  .theme-doc-sidebar-container,
+  .theme-doc-breadcrumb,
+  .navbar__brand,
+  .navbar__title,
+  .navbar__item,
+  .menu__list,
+  .menu__link {
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Ensure content stays within bounds */
+  .col,
+  .col--1, .col--2, .col--3, .col--4, .col--5, .col--6,
+  .col--7, .col--8, .col--9, .col--10, .col--11, .col--12 {
+    padding: 0 0.5rem;
+  }
+
+  /* Chat components specific fixes */
+  .chat-window {
+    height: 75vh !important;
+    max-height: 75vh !important;
+  }
+
+  .chat-controls {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .chat-controls > div {
+    width: 100% !important;
+  }
+
+  .message-input-container {
+    flex-direction: column !important;
+  }
+
+  .message-input-container textarea {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+
+  .message-input-container button {
+    width: 100% !important;
+    align-self: stretch !important;
+  }
+
+  .floatingChatButton {
+    width: 50px !important;
+    height: 50px !important;
+    bottom: 20px !important;
+    right: 20px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+
+  .main-wrapper {
+    padding: 0 0.75rem;
+  }
+
+  /* Prevent text cut-off on small screens */
+  .hero__title {
+    font-size: 1.75rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .hero__subtitle {
+    font-size: 0.9rem !important;
+  }
+
+  /* Ensure all text is visible */
+  .navbar__brand,
+  .navbar__title,
+  .navbar__item,
+  .menu__link,
+  .table-of-contents__link,
+  .pagination-nav__link,
+  .card,
+  .alert {
+    min-width: 0 !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+
+  /* Adjust margins and padding */
+  .margin-horiz--xl,
+  .margin-horiz--lg,
+  .margin-horiz--md,
+  .margin-horiz--sm {
+    margin-left: 0.5rem !important;
+    margin-right: 0.5rem !important;
+  }
+
+  /* Chat components */
+  .chatPopup {
+    width: calc(100vw - 40px) !important;
+    height: 65vh !important;
+    max-height: 65vh !important;
+  }
+
+  .chatPopupOverlay {
+    padding: 15px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+
+  .main-wrapper {
+    padding: 0 0.5rem;
+  }
+
+  /* Extra small screen fixes */
+  .hero__title {
+    font-size: 1.5rem !important;
+  }
+
+  .hero__subtitle {
+    font-size: 0.8rem !important;
+  }
+
+  /* Ensure everything fits */
+  .navbar__brand,
+  .navbar__title,
+  .navbar__item,
+  .menu__link,
+  .table-of-contents__link,
+  .pagination-nav__link,
+  .card__body,
+  .alert__description {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+
+  /* Chat components */
+  .chatPopup {
+    width: calc(100vw - 20px) !important;
+    height: 60vh !important;
+    max-height: 60vh !important;
+    bottom: 10px !important;
+    right: 10px !important;
+    left: 10px !important;
+  }
+
+  .chatPopupOverlay {
+    padding: 10px !important;
+  }
+
+  .chat-header {
+    padding: 12px 16px !important;
+  }
+
+  .chat-header h3 {
+    font-size: 14px !important;
+  }
+
+  .chat-controls {
+    padding: 12px !important;
+  }
+
+  .message-list {
+    padding: 12px !important;
+  }
+
+  .message-input-container {
+    padding: 12px !important;
+  }
+}
+
+/* Extra small devices (phones, 320px and up) */
+@media (max-width: 360px) {
+  .container {
+    padding: 0 0.25rem;
+  }
+
+  .main-wrapper {
+    padding: 0 0.25rem;
+  }
+
+  /* Ensure text is never cut off */
+  * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Specific elements that often cause overflow */
+  pre,
+  code,
+  .prism-code,
+  table,
+  img,
+  iframe,
+  video {
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+  }
+}
+
+/* Responsive sidebar adjustments */
+@media (max-width: 996px) {
+  .menu {
+    padding: 0.5rem !important;
+  }
+
+  .menu__list-item {
+    margin: 2px 0 !important;
+  }
+
+  .menu__link {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  .navbar-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 2000 !important;
+  }
+
+  .navbar-sidebar__items {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .navbar-sidebar__item {
+    flex: 1 !important;
+    overflow-y: auto !important;
+  }
+
+  .menu {
+    padding: 1rem 0.5rem !important;
+  }
+}
+
+/* Enhanced mobile menu header */
+.navbar-sidebar__brand {
+  padding: 1rem !important;
+  border-bottom: 1px solid var(--ifm-color-gray-200) !important;
+}
+
+[data-theme='dark'] .navbar-sidebar__brand {
+  border-bottom: 1px solid var(--ifm-color-gray-700) !important;
+}
+
+/* Mobile menu close button */
+.navbar-sidebar__close {
+  padding: 1rem !important;
+  border-radius: 8px !important;
+  margin: 0.5rem !important;
+}
+
+.navbar-sidebar__close:hover {
+  background-color: var(--ifm-color-gray-100) !important;
+}
+
+[data-theme='dark'] .navbar-sidebar__close:hover {
+  background-color: var(--ifm-color-gray-800) !important;
+}
+
+/* Ensure content doesn't overlap with floating button on mobile */
+.main-wrapper {
+  padding-bottom: 100px; /* Space for floating chat button on mobile */
+}
+
+.footer {
+  padding-bottom: 80px; /* Extra padding to avoid overlap with floating button */
+}
+
+@media (max-width: 768px) {
+  .main-wrapper {
+    padding-bottom: 80px !important;
+  }
+
+  .footer {
+    padding-bottom: 70px !important;
+  }
 }
 
 .container {

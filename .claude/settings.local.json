@@ -2,7 +2,29 @@
   "permissions": {
     "allow": [
       "SlashCommand(/sp.specify)",
-      "Skill(sp.tasks)"
+      "Skill(sp.tasks)",
+      "Bash(powershell -ExecutionPolicy Bypass -File .specify/scripts/powershell/create-new-feature.ps1 -Json -Number 1 -ShortName \"docusaurus-ingestion\" \"Spec-1: URL Ingestion, Embedding & Vector Storage\n\nInstructions\n\nTreat this spec as the authoritative definition for Spec-1\nDo not introduce features outside this scope\nPrefer simple, deterministic, and repeatable logic\nAssume downstream specs depend on the outputs of this spec\nOptimize outputs for future RAG retrieval and agent usage\nFollow Spec-Driven Development strictly; no speculative design\n\nTarget Audience\n\nAI engineers and backend developers building a RAG system for a published Docusaurus book.\n\nFocus\n\nCreate a backend pipeline that ingests deployed Docusaurus book URLs, extracts clean book content, generates embeddings using Cohere, and stores them in Qdrant Cloud for later retrieval.\n\nSuccess Criteria\n\nAll published book pages are indexed in Qdrant\nExtracted text excludes navigation, UI, and boilerplate\nText is chunked with semantic overlap\nCohere embeddings are generated successfully\nVectors are stored with metadata \\(URL, section, heading, chunk ID\\)\nVector search returns relevant book content\nRe-running ingestion does not duplicate data\n\nConstraints\n\nBackend-only implementation\nCohere must be used for embeddings\nQdrant Cloud Free Tier must be used\nEnvironment-variable based configuration\nDeterministic IDs for safe re-indexing\nOptimized for downstream RAG and OpenAI Agents usage\n\nNot Building\n\nNo chatbot or agent logic\nNo retrieval or ranking pipelines\nNo FastAPI routes\nNo frontend integration\nNo authentication or analytics\n\nalways create specs and history of complete work\")",
+      "Bash(powershell -ExecutionPolicy Bypass -File .specify/scripts/powershell/update-agent-context.ps1 -AgentType claude)",
+      "Bash(powershell -ExecutionPolicy Bypass -File .specify/scripts/powershell/check-prerequisites.ps1 -Json)",
+      "Bash(powershell -ExecutionPolicy Bypass -File .specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks)",
+      "Bash(dir \"specs/001-docusaurus-ingestion/checklists/\")",
+      "Bash(powershell \"Get-ChildItem -Path backend -Recurse\")",
+      "Bash(curl -I \"https://hackathon-book-ashy.vercel.app/sitemap.xml\")",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(python -c \"from src.services.agent_service import AgentService; print\\(''Import successful''\\)\")",
+      "Bash(python validate_structure.py)",
+      "Bash(python test_agents_sdk.py)",
+      "Bash(python test_e2e.py)",
+      "Bash(python backend/test_e2e.py)",
+      "Bash(python -m uvicorn src.main:app --reload)",
+      "Bash(python backend/test_agents_sdk.py)",
+      "Bash(python find_working_openrouter_model.py)",
+      "Bash(python debug_openrouter_call.py)",
+      "Bash(python -m pytest test_e2e.py -v)",
+      "Bash(timeout 30 uv run uvicorn src.main:app --reload)",
+      "Bash(python debug_gemini_call.py)",
+      "Bash(SUPPRESS_RETRIEVAL_LOGS=true python debug_gemini_call.py)"
     ]
   }
 }

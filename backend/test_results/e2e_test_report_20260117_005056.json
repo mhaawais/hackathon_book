@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-01-17T00:50:38.929885",
+  "feature": "Agent + Retrieval API",
+  "tests_run": [
+    {
+      "test_id": "T001",
+      "test_name": "Normal retrieval mode",
+      "status": "FAILED",
+      "duration_ms": 11394.44899559021,
+      "mode_used": "retrieval",
+      "sources_count": 0,
+      "response_preview": "I encountered an error processing your request: Gemini API error: 404 models/gemini-1.5-pro is not f...",
+      "retrieval_time_ms": 907.6042175292969,
+      "total_time_ms": 10587.016582489014
+    },
+    {
+      "test_id": "T002",
+      "test_name": "Selected-text-only mode",
+      "status": "PASSED",
+      "duration_ms": 182.62386322021484,
+      "mode_used": "selected-text-only",
+      "sources_count": 0,
+      "response_preview": "I encountered an error processing your request: Gemini API error: 404 models/gemini-1.5-pro is not f...",
+      "retrieval_time_ms": 0.0,
+      "total_time_ms": 160.11619567871094
+    },
+    {
+      "test_id": "T003",
+      "test_name": "Service availability check",
+      "status": "PASSED",
+      "duration_ms": 204.88786697387695,
+      "retrieval_tool_available": true
+    }
+  ],
+  "summary": {
+    "total_tests": 3,
+    "passed": 2,
+    "failed": 1,
+    "success_rate": 66.66666666666666
+  }
+}

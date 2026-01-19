@@ -1,0 +1,218 @@
+# OpenAPI Contract: Agent + Retrieval API
+
+openapi: 3.0.3
+info:
+  title: Agent + Retrieval API
+  description: API for interacting with an OpenAI agent that can retrieve information from Docusaurus book content
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.example.com
+    description: Production server
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the health status of the service
+      responses:
+        '200':
+          description: Health status information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+
+  /chat/query:
+    post:
+      summary: Query the agent
+      description: Submit a query to the agent and receive a response with provenance information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryRequest'
+      responses:
+        '200':
+          description: Agent response with provenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+        '400':
+          description: Bad request (e.g., empty query)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Service unavailable (e.g., upstream API failure)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    QueryRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: The user's question/query
+          example: "How do I configure authentication in this system?"
+        selected_text:
+          type: string
+          description: User-selected text for selected-text-only mode
+          example: "Authentication is configured through the settings.py file..."
+        top_k:
+          type: integer
+          description: Number of chunks to retrieve from Qdrant
+          default: 5
+          minimum: 1
+          maximum: 10
+          example: 5
+        session_id:
+          type: string
+          description: Session identifier for tracking conversations
+          example: "session_12345"
+
+    AgentResponse:
+      type: object
+      required:
+        - answer
+        - sources
+        - mode_used
+        - retrieval_time_ms
+        - total_time_ms
+      properties:
+        answer:
+          type: string
+          description: The agent's answer to the query
+          example: "To configure authentication, you need to set the AUTH_TOKEN..."
+        sources:
+          type: array
+          description: List of source chunks used in the response
+          items:
+            $ref: '#/components/schemas/RetrievedChunk'
+        mode_used:
+          type: string
+          enum: [retrieval, selected-text-only]
+          description: Which mode was used for the response
+          example: "retrieval"
+        retrieval_time_ms:
+          type: number
+          description: Time taken for retrieval process in milliseconds
+          example: 125.5
+        total_time_ms:
+          type: number
+          description: Total processing time in milliseconds
+          example: 2450.2
+        session_id:
+          type: string
+          description: Session identifier if provided in request
+          example: "session_12345"
+
+    RetrievedChunk:
+      type: object
+      required:
+        - chunk_id
+        - content
+        - url
+        - score
+      properties:
+        chunk_id:
+          type: string
+          description: Unique identifier for the chunk
+          example: "chunk_abc123"
+        content:
+          type: string
+          description: The text content of the chunk
+          example: "Authentication is configured through environment variables..."
+        url:
+          type: string
+          description: Source URL where the content originated
+          format: uri
+          example: "https://example.com/docs/authentication"
+        score:
+          type: number
+          description: Similarity score from the retrieval
+          example: 0.85
+        metadata:
+          type: object
+          description: Additional metadata from Qdrant
+          additionalProperties: true
+
+    HealthStatus:
+      type: object
+      required:
+        - status
+        - timestamp
+        - services
+        - version
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: Overall service status
+          example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when status was checked
+          example: "2026-01-13T10:00:00Z"
+        services:
+          type: object
+          description: Status of individual services
+          properties:
+            qdrant:
+              type: boolean
+              description: Status of Qdrant service
+              example: true
+            openai:
+              type: boolean
+              description: Status of OpenAI service
+              example: true
+            cohere:
+              type: boolean
+              description: Status of Cohere service
+              example: true
+        version:
+          type: string
+          description: Current version of the service
+          example: "1.0.0"
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "ValidationError"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Query cannot be empty"
+        details:
+          type: object
+          description: Additional error details (optional)
+          additionalProperties: true

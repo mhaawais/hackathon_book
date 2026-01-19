@@ -1,0 +1,73 @@
+# API Contract: Docusaurus Ingestion Service
+
+## Overview
+Contract for the ingestion service endpoints (conceptual, as implementation is a CLI tool).
+
+## Endpoints
+
+### POST /ingest
+Initiate the ingestion process for a Docusaurus book.
+
+**Request Body**:
+```json
+{
+  "url": "https://example-docusaurus-book.com",
+  "chunk_size": 512,
+  "overlap_size": 128,
+  "collection_name": "docusaurus_chunks"
+}
+```
+
+**Response**:
+```json
+{
+  "job_id": "uuid-string",
+  "status": "initiated",
+  "pages_to_process": 150,
+  "estimated_duration_minutes": 15
+}
+```
+
+### GET /ingest/{job_id}
+Get the status of an ingestion job.
+
+**Response**:
+```json
+{
+  "job_id": "uuid-string",
+  "status": "completed",
+  "pages_processed": 150,
+  "chunks_created": 245,
+  "errors": [],
+  "started_at": "2026-01-09T10:00:00Z",
+  "completed_at": "2026-01-09T10:12:34Z"
+}
+```
+
+### POST /search
+Search the ingested content (for verification purposes).
+
+**Request Body**:
+```json
+{
+  "query": "search query text",
+  "top_k": 5,
+  "collection_name": "docusaurus_chunks"
+}
+```
+
+**Response**:
+```json
+{
+  "results": [
+    {
+      "chunk_id": "unique-chunk-id",
+      "url": "https://source-page-url.com",
+      "section": "Chapter Title",
+      "heading": "Section Heading",
+      "content": "Relevant content snippet...",
+      "score": 0.87
+    }
+  ]
+}
+```

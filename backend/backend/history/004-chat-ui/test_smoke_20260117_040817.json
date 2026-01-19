@@ -1,0 +1,12 @@
+{
+  "timestamp": "20260117_040817",
+  "test_type": "smoke_test",
+  "target": "backend_api",
+  "status": "PASS",
+  "endpoints_tested": [
+    "/health",
+    "/api/v1/chat/query"
+  ],
+  "queries_tested": 2,
+  "notes": "Verifies API accessibility for frontend integration"
+}

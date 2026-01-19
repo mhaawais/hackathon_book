@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-01-17T01:19:44.020840",
+  "feature": "Agent + Retrieval API",
+  "tests_run": [
+    {
+      "test_id": "T001",
+      "test_name": "Normal retrieval mode",
+      "status": "PASSED",
+      "duration_ms": 3519.885540008545,
+      "mode_used": "retrieval",
+      "sources_count": 3,
+      "response_preview": "The provided context does not explicitly state the main purpose of \"this system.\" However, it descri...",
+      "retrieval_time_ms": 502.00676918029785,
+      "total_time_ms": 3517.6658630371094
+    },
+    {
+      "test_id": "T002",
+      "test_name": "Selected-text-only mode",
+      "status": "PASSED",
+      "duration_ms": 672.4233627319336,
+      "mode_used": "selected-text-only",
+      "sources_count": 0,
+      "response_preview": "The text says that testing is an important part of software development and that it helps ensure qua...",
+      "retrieval_time_ms": 0.0,
+      "total_time_ms": 670.5737113952637
+    },
+    {
+      "test_id": "T003",
+      "test_name": "Service availability check",
+      "status": "PASSED",
+      "duration_ms": 210.127592086792,
+      "retrieval_tool_available": true
+    }
+  ],
+  "summary": {
+    "total_tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "success_rate": 100.0
+  }
+}

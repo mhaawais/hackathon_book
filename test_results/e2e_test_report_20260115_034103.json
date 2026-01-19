@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-01-15T03:40:58.849672",
+  "feature": "Agent + Retrieval API",
+  "tests_run": [
+    {
+      "test_id": "T001",
+      "test_name": "Normal retrieval mode",
+      "status": "ERROR",
+      "error": "'coroutine' object has no attribute 'answer'",
+      "duration_ms": 0
+    },
+    {
+      "test_id": "T002",
+      "test_name": "Selected-text-only mode",
+      "status": "ERROR",
+      "error": "'coroutine' object has no attribute 'answer'",
+      "duration_ms": 0
+    },
+    {
+      "test_id": "T003",
+      "test_name": "Service availability check",
+      "status": "PASSED",
+      "duration_ms": 597.0325469970703,
+      "retrieval_tool_available": true
+    }
+  ],
+  "summary": {
+    "total_tests": 3,
+    "passed": 1,
+    "failed": 2,
+    "success_rate": 33.33333333333333
+  }
+}

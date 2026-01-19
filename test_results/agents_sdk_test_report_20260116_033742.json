@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-01-16T03:37:38.984908",
+  "feature": "OpenAI Agents SDK Implementation",
+  "test_results": {
+    "retrieval_mode": {
+      "test_id": "T001",
+      "test_name": "Retrieval Mode",
+      "status": "FAILED",
+      "duration_ms": 2465.6145572662354,
+      "mode_used": "retrieval",
+      "sources_count": 0,
+      "has_answer": true,
+      "has_docs_sources": false,
+      "error_present": false,
+      "response_preview": "I encountered an error processing your request: Error code: 404 - {'error': {'message': 'No endpoint...",
+      "retrieval_time_ms": 1006.9210529327393,
+      "total_time_ms": 2463.3405208587646
+    },
+    "selected_text_only_mode": {
+      "test_id": "T002",
+      "test_name": "Selected-text-only Mode",
+      "status": "PASSED",
+      "duration_ms": 1348.0422496795654,
+      "mode_used": "selected-text-only",
+      "sources_count": 0,
+      "has_answer": true,
+      "error_present": false,
+      "response_preview": "I encountered an error processing your request: Error code: 404 - {'error': {'message': 'No endpoint...",
+      "retrieval_time_ms": 0.0,
+      "total_time_ms": 1345.874547958374
+    }
+  },
+  "summary": {
+    "total_tests": 2,
+    "passed": 1,
+    "failed": 1,
+    "success_rate": 50.0
+  }
+}
