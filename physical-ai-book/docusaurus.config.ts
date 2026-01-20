@@ -70,7 +70,7 @@ const config: Config = {
 
   // Custom fields for API configuration
   customFields: {
-    chatApiBaseUrl: process.env.CHAT_API_BASE_URL || 'http://127.0.0.1:8001',
+    chatApiBaseUrl: process.env.CHAT_API_BASE_URL || 'http://127.0.0.1:8000',
   },
 
   themeConfig: {

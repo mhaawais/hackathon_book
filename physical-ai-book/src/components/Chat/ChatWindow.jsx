@@ -150,7 +150,7 @@ const ChatWindow = () => {
     }}>
       {/* Header with health indicator */}
       <div style={{
-        padding: '14px 18px',
+        padding: '6px 12px',
         borderBottom: '1px solid #f1f5f9',
         display: 'flex',
         justifyContent: 'space-between',
@@ -171,8 +171,8 @@ const ChatWindow = () => {
           }}></div>
           <h3 style={{
             margin: 0,
-            fontSize: '18px',
-            fontWeight: '700',
+            fontSize: '16px',
+            fontWeight: '600',
             background: 'linear-gradient(135deg, #0f172a, #334155)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
@@ -186,11 +186,11 @@ const ChatWindow = () => {
 
       {/* Controls */}
       <div style={{
-        padding: '10px 16px',
+        padding: '6px 12px',
         borderBottom: '1px solid #e2e8f0',
         backgroundColor: '#f8fafc',
         position: 'sticky',
-        top: '45px',
+        top: '35px',
         zIndex: 9,
         backdropFilter: 'blur(10px)'
       }}>
@@ -209,7 +209,7 @@ const ChatWindow = () => {
       <div style={{
         flex: 1,
         overflowY: 'auto',
-        padding: '24px',
+        padding: '16px',
         backgroundColor: '#f8fafc',
         minHeight: '0',
         WebkitOverflowScrolling: 'touch' // Better scrolling on iOS
@@ -220,7 +220,7 @@ const ChatWindow = () => {
 
       {/* Input */}
       <div style={{
-        padding: '12px 16px',
+        padding: '8px 12px',
         borderTop: '1px solid #e2e8f0',
         background: 'linear-gradient(135deg, #ffffff, #f8fafc)',
         position: 'sticky',
@@ -233,20 +233,20 @@ const ChatWindow = () => {
       {/* Error display */}
       {error && (
         <div style={{
-          padding: '10px 16px',
+          padding: '6px 12px',
           backgroundColor: '#fef2f2',
           color: '#dc2626',
           borderTop: '1px solid #fecaca',
-          fontSize: '13px',
+          fontSize: '12px',
           fontWeight: '500',
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
+          gap: '6px',
           position: 'sticky',
-          bottom: '50px',
+          bottom: '40px',
           zIndex: 9,
-          borderRadius: '0 0 12px 12px',
-          boxShadow: '0 -2px 6px rgba(0, 0, 0, 0.05)'
+          borderRadius: '0 0 8px 8px',
+          boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.05)'
         }}>
           <div style={{
             width: '20px',

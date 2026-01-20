@@ -13,16 +13,16 @@ const ChatControls = ({
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      gap: '16px',
-      padding: '16px 0',
+      gap: '8px',
+      padding: '8px 0',
       width: '100%'
     }}>
       <div style={{
         display: 'flex',
-        gap: '20px',
+        gap: '12px',
         alignItems: 'center',
         flexWrap: 'wrap',
-        padding: '4px 0'
+        padding: '2px 0'
       }}>
         {/* Top K Selector */}
         <div style={{ flex: '0 0 auto' }}>
